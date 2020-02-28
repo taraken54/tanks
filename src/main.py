@@ -40,6 +40,8 @@ class Player(pygame.sprite.Sprite):
         self.speedy = 0
         keystate = pygame.key.get_pressed()
         
+#Управление и повороты
+        old_duration = self.duration
         if keystate[pygame.K_LEFT]:
             self.speedx = -8
             self.duration = LEFT
@@ -52,7 +54,13 @@ class Player(pygame.sprite.Sprite):
         elif keystate[pygame.K_DOWN]:
             self.speedy = 8
             self.duration = DOWN
-            
+        if old_duration != self.duration :
+            if (self.duration == UP and old_duration == DOWN) or (self.duration == DOWN and old_duration == UP) or (self.duration == LEFT and old_duration == RIGHT) or (self.duration == RIGHT and old_duration == LEFT):
+                self.image = pygame.transform.rotate(self.image, 180)
+            if (old_duration == DOWN and self.duration == RIGHT) or (old_duration == RIGHT and self.duration == UP) or (old_duration == UP and self.duration == LEFT) or (old_duration == LEFT and self.duration == DOWN):
+                self.image = pygame.transform.rotate(self.image, 90)
+            if (old_duration == RIGHT and self.duration == DOWN) or (old_duration == UP and self.duration == RIGHT) or (old_duration == LEFT and self.duration == UP) or (old_duration == DOWN and self.duration == LEFT):
+                self.image = pygame.transform.rotate(self.image, -90)
         self.rect.x += self.speedx
         self.rect.y += self.speedy
         
